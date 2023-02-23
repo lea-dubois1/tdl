@@ -28,15 +28,18 @@ class Task
 
     }
 
-    public function Add($id_utilisateur, $content, $creation_date) {
+    public function Add($id_utilisateur, $content) {
+
+        $creation_date = date('Y-m-d H:i:s');
         
-        $sql = "INSERT INTO `taches`(`id_utilisateur`, `content`, `isChecked`, `creationDate`) VALUES (':id_utilisateur',':content','0',':creation_date')";
+        $sql = "INSERT INTO taches(`id_utilisateur`, `content`, `isChecked`, `creationDate`) VALUES (:idUtilisateur,:content,:isChecked,:creationDate)";
             
         // Check if a line with the same login exist in our Database.
         $req = $this->conn->prepare($sql);
-        $req->execute(array(':id_utilisateur' => $id_utilisateur,
+        $req->execute(array(':idUtilisateur' => $id_utilisateur,
                             ':content' => $content,
-                            'creation_date' => $creation_date
+                            ':isChecked' => 0,
+                            ':creationDate' => $creation_date
         ));
         
         echo 'Task added in the db';
@@ -56,10 +59,13 @@ class Task
 
     public function Check($idTask) {
 
-        $sql = "UPDATE taches SET isChecked=:isChecked WHERE id=:idTask";
+        $completion_date = date('Y-m-d H:i:s');
+
+        $sql = "UPDATE taches SET isChecked=:isChecked, completionDate=:completionDate WHERE id=:idTask";
 
         $req = $this->conn->prepare($sql);
         $req->execute(array(':isChecked' => 1,
+                            ':completionDate' => $completion_date,
                             ':idTask' => $idTask
         ));
 
@@ -69,10 +75,11 @@ class Task
 
     public function Uncheck($idTask) {
         
-        $sql = "UPDATE taches SET isChecked=:isChecked WHERE id=:idTask";
+        $sql = "UPDATE taches SET isChecked=:isChecked, completionDate=:completionDate WHERE id=:idTask";
 
         $req = $this->conn->prepare($sql);
         $req->execute(array(':isChecked' => 0,
+                            ':completionDate' => '',
                             ':idTask' => $idTask
         ));
 
@@ -80,13 +87,13 @@ class Task
 
     }
 
-    public function getAll() {
+    public function getAll($id_utilisateur) {
 
-        $sql = "SELECT * FROM taches";
+        $sql = "SELECT * FROM taches WHERE id_utilisateur = :idUser";
 
         $req = $this->conn->prepare($sql);
-        $req->execute();
-        $tab = $req->fetch(PDO::FETCH_DEFAULT);
+        $req->execute(array(':idUser' => $id_utilisateur));
+        $tab = $req->fetchAll(PDO::FETCH_CLASS);
         
         $json = json_encode($tab, JSON_PRETTY_PRINT);
         echo $json;
@@ -95,16 +102,11 @@ class Task
 
 }
 
-// $newTask = new Task();
-// $newTask->getAll();
+//$newTask = new Task();
+//$newTask->Add(60, 'Ceci est toujours une autre tache');
+//$newTask->Delete(6);
+//$newTask->getAll(60);
 
-//echo $newUser->Register('juju', 'azerty', 'azerty', 'juju@gmail.com', 'Julie', 'Dubois');
-//$newUser->Connect('juliedbs', 'azerty');
-//echo $newUser->Update('juliedbs', 'azerty', '', '', 'julie@gmail.com', 'Julie', 'Dubois');
-//$newUser->Update('lea', 'azerty', 'azer','azer', 'unemail@gmail.com', 'Lea', 'DuboiS');
-//echo $newUser->GetLogin();
-//$newUser->Disconnect();
-//$newUser->Delete();
 //var_dump($_SESSION);
 
 ?>

@@ -9,16 +9,16 @@
 </head>
 
 <?php require_once 'User.php' ?>
-<?php require_once 'header.php' ?>
 
 <body>
+    <?php require_once 'header.php' ?>
 
     <?php if (session_status() == PHP_SESSION_NONE){ session_start();} ?>
 
     <div id="form">Bonjour <?php if($_SESSION){echo ' ' . $_SESSION['login'];}else{echo 'user';}?></div>
 
-</body>
+    <?php require_once 'footer.php' ?>
 
-<?php require_once 'footer.php' ?>
+</body>
 
 </html>

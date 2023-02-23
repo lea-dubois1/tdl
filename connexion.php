@@ -10,7 +10,7 @@
 <body>
 
     <?php require_once 'User.php' ?>
-    <?php include 'header.php' ?>
+    <?php require_once 'header.php' ?>
 
     <main>
 
@@ -38,5 +38,8 @@
         </form>
         
     </main>
+
+    <?php require_once "footer.php" ?>
+    
 </body>
 </html>
