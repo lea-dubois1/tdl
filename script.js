@@ -1,7 +1,7 @@
 async function getAllTasks() {
 
     // Fetch all tasks from the database
-    const response = await fetch('back/taskRecupBack.php');
+    const response = await fetch('back.php?recup=1');
     const jsonTaches = await response.json();
 
     return jsonTaches;
@@ -11,7 +11,7 @@ async function getAllTasks() {
 async function addTask(formData) {
 
     // Add the task to the database
-    const response = await fetch("back/taskAddBack.php", {method: "POST", body: formData,});
+    const response = await fetch("back.php?add=1", {method: "POST", body: formData,});
     const result = await response.text();
 
     return result;
@@ -56,13 +56,6 @@ async function displayTask() {
             const dateTacheListe = document.createElement("p");
             dateTacheListe.innerHTML = "Creation date :" + element['creationDate'];
             oneTaskDiv.appendChild(dateTacheListe);
-
-            /***************** Create suppr button ****************/
-            const supprButton = document.createElement("button");
-            supprButton.setAttribute("name", element['id']);
-            supprButton.setAttribute("id", "suppr");
-            supprButton.innerText = "Supprimer";
-            oneTaskDiv.appendChild(supprButton);
         }
 
 
@@ -96,14 +89,14 @@ async function displayTask() {
             const compDateTacheListe = document.createElement("p");
             compDateTacheListe.innerHTML = "Completion date :" + element['completionDate'];
             oneTaskDivCompl.appendChild(compDateTacheListe);
-
-            /***************** Create suppr button ****************/
-            const supprButton = document.createElement("button");
-            supprButton.setAttribute("name", element['id']);
-            supprButton.setAttribute("id", "suppr");
-            supprButton.innerText = "Supprimer";
-            oneTaskDivCompl.appendChild(supprButton);
         }
+
+        /***************** Create suppr button ****************/
+        const supprButton = document.createElement("button");
+        supprButton.setAttribute("name", element['id']);
+        supprButton.setAttribute("class", "suppr");
+        supprButton.innerText = "Supprimer";
+        oneTaskDiv.appendChild(supprButton);
     }
 }
 
@@ -130,7 +123,7 @@ async function checkTask() {
 
         })
 
-        // let promise = await fetch('back/taskCheckBack.php', {method: "POST", body: idElement});
+        // let promise = await fetch('back.php?check=1', {method: "POST", body: idElement});
         // let response = await promise.text();
         
     }
@@ -138,7 +131,7 @@ async function checkTask() {
 
 function whenClickToDo(jsonElement) {
 
-    fetch('back/taskCheckBack.php', {
+    fetch('back.php?check=1', {
         method: "POST", 
         body: jsonElement
     })
@@ -193,7 +186,7 @@ formAddTask.addEventListener('submit', (e) => {
 
         elementsVides[i].addEventListener('click', (e) => {
 
-            fetch('back/taskCheckBack.php', {
+            fetch('back.php?check=1', {
                 method: "POST", 
                 body: formDataCheck
             })

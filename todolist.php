@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <!-- <link rel="stylesheet" type="text/css" href="style.css"/> -->
+    <link rel="stylesheet" type="text/css" href="style.css"/>
     <script src="script.js" defer></script>
     <title>Login</title>
 </head>
@@ -18,7 +18,7 @@
         <h2>To do tasks</h2>
 
         <form action="" method="post" id="formAddTask">
-            <input type="text" name="addTask" id="content" placeholder="Name of the task">
+            <input type="text" name="addTask" id="content" placeholder="Name of the task" required>
             <button type="submit" name="submit" id="addTaskButton">Add</button>
         </form>
         

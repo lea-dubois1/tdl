@@ -1,0 +1,11 @@
+.uneTacheLigne {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 33vw;
+    margin-left: 1vw;
+}
+
+.suppr {
+    height: 25px;
+}
