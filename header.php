@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 
 <?php if (session_status() == PHP_SESSION_NONE){ session_start();} ?>

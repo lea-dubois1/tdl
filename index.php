@@ -15,7 +15,7 @@
 
     <?php if (session_status() == PHP_SESSION_NONE){ session_start();} ?>
 
-    <div id="form">Bonjour <?php if($_SESSION){echo ' ' . $_SESSION['login'];}else{echo 'user';}?></div>
+    <div id="bonjour"><p>Bonjour <?php if($_SESSION){echo ' ' . $_SESSION['login'];}else{echo 'user';}?></p></div>
 
     <?php require_once 'footer.php' ?>
 
