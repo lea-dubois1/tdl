@@ -22,11 +22,11 @@
             <button type="submit" name="submit" id="addTaskButton">Add</button>
         </form>
         
-        <form method="POST" id="toDoTasks"></form>
+        <div id="toDoTasks"></div>
 
 
         <h2>Completed tasks</h2>
-        <form method="$_POST" id="completedTasks"></div>
+        <div id="completedTasks"></div>
 
     </main>
 

@@ -5,13 +5,13 @@
     <meta charset="utf-8"/>
 </head>
 
+<?php if (session_status() == PHP_SESSION_NONE){ session_start();} ?>
+
 <header>
 
     <h1>ToDo or not ToDo</h1>
 
     <nav>
-
-        <?php if (session_status() == PHP_SESSION_NONE){ session_start();} ?>
             
         <ul id="menu">
             <a href="index.php"><li>Home</li></a>

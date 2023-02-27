@@ -13,6 +13,7 @@ async function addTask(formData) {
     // Add the task to the database
     const response = await fetch("back.php?add=1", {method: "POST", body: formData,});
     const result = await response.text();
+    addTextInput.value = "";
 
     return result;
 
@@ -23,7 +24,7 @@ async function displayTask() {
     jsonTaches = await getAllTasks();          // Get the tasks from the database
 
     for (let i = 0; i < jsonTaches.length; i++) {
-        const element = jsonTaches[i];    
+        const element = jsonTaches[i];
 
 
         //_________________________ TO DO _________________________//
@@ -56,6 +57,13 @@ async function displayTask() {
             const dateTacheListe = document.createElement("p");
             dateTacheListe.innerHTML = "Creation date :" + element['creationDate'];
             oneTaskDiv.appendChild(dateTacheListe);
+
+            /***************** Create suppr button ****************/
+            const supprButton = document.createElement("button");
+            supprButton.setAttribute("name", element['id']);
+            supprButton.setAttribute("class", "suppr");
+            supprButton.innerText = "Supprimer";
+            oneTaskDiv.appendChild(supprButton);
         }
 
 
@@ -80,6 +88,11 @@ async function displayTask() {
             //checkboxVide.setAttribute("class", 'checkbox');
             oneTaskDivCompl.appendChild(checkboxChecked);
 
+            /****************** Create the title ******************/
+            const titreTacheListe = document.createElement("p");
+            titreTacheListe.innerHTML = element['content'];
+            oneTaskDivCompl.appendChild(titreTacheListe);
+
             /************* Create the creation date *************/
             const CreaDateTacheListe = document.createElement("p");
             CreaDateTacheListe.innerHTML = "Creation date :" + element['creationDate'];
@@ -89,14 +102,14 @@ async function displayTask() {
             const compDateTacheListe = document.createElement("p");
             compDateTacheListe.innerHTML = "Completion date :" + element['completionDate'];
             oneTaskDivCompl.appendChild(compDateTacheListe);
-        }
 
-        /***************** Create suppr button ****************/
-        const supprButton = document.createElement("button");
-        supprButton.setAttribute("name", element['id']);
-        supprButton.setAttribute("class", "suppr");
-        supprButton.innerText = "Supprimer";
-        oneTaskDiv.appendChild(supprButton);
+            /***************** Create suppr button ****************/
+            const supprButton = document.createElement("button");
+            supprButton.setAttribute("name", element['id']);
+            supprButton.setAttribute("class", "suppr");
+            supprButton.innerText = "Supprimer";
+            oneTaskDivCompl.appendChild(supprButton);
+        }
     }
 }
 
@@ -104,41 +117,64 @@ async function checkTask() {
 
     await displayTask();
 
-    var elementsVides = document.querySelectorAll('.checkboxVide');
-    var i;
+    const elementsVides = document.querySelectorAll('.checkboxVide');
 
-    const form = document.getElementById('toDoTasks')
+    for(let i = 0; i < elementsVides.length; i++) { 
 
-    for(i = 0; i < elementsVides.length; i++) { 
-
-        console.log(elementsVides[i]);
-
-        let jsonElement = JSON.stringify({'idTask': elementsVides[i].name});
-        console.log(jsonElement)
+        const idTache = elementsVides[i].name;
 
         elementsVides[i].addEventListener('click', (e) => {
 
-            whenClickToDo(jsonElement);
-
-
-        })
-
-        // let promise = await fetch('back.php?check=1', {method: "POST", body: idElement});
-        // let response = await promise.text();
-        
+            fetch('back.php?check=1&idTask=' + idTache)
+            .then((response) => {
+                response.text();
+            })
+        })        
     }
+
+    supprTask();
 }
 
-function whenClickToDo(jsonElement) {
+async function uncheckTask() {
 
-    fetch('back.php?check=1', {
-        method: "POST", 
-        body: jsonElement
-    })
-    .then((response) => {
-        console.log(response.text());
-    })
+    await displayTask();
 
+    const elementsCheck = document.querySelectorAll('.checkboxChecked');
+
+    for(let i = 0; i < elementsCheck.length; i++) { 
+
+        const idTache = elementsCheck[i].name;
+
+
+        elementsCheck[i].addEventListener('click', (e) => {
+
+            fetch('back.php?uncheck=1&idTask=' + idTache)
+            .then((response) => {
+                response.text();
+            })
+        })        
+    }
+
+    supprTask();
+}
+
+function supprTask() {
+
+    const supprButtons = document.getElementsByClassName('suppr');
+
+    for(let i = 0; i < supprButtons.length; i++) { 
+
+        const idTache = supprButtons[i].name;
+
+        supprButtons[i].addEventListener('click', (e) => {
+
+            fetch('back.php?delete=1&idTask=' + idTache)
+            .then((response) => {
+                response.text();
+            })
+        })        
+    }
+    
 }
 
 
@@ -149,54 +185,40 @@ const completedTasks = document.getElementById('completedTasks');
 const formAddTask = document.getElementById('formAddTask');
 const checkboxChecked = document.getElementsByClassName('checkboxChecked');
 const checkboxVide = document.getElementsByClassName('checkboxVide');
+const addTextInput = document.getElementById('content');
+const supprButtons = document.getElementsByClassName('suppr');
 
-checkTask();
+displayTask();
 
 formAddTask.addEventListener('submit', (e) => {
 
     e.preventDefault();
     toDoTasks.innerHTML = "";
+    completedTasks.innerHTML = ""; 
 
     const formData = new FormData(formAddTask);
-    formData.forEach((value, key) => {
-        console.log(key + ':' + value);
-    });
-
-    console.log(formData)
 
     addTask(formData);
+
 
     displayTask()
 
 });
-    
-(async () => {
-    await displayTask();
 
-    const elementsVides = document.querySelectorAll('.checkboxVide');
-    const form = document.getElementById('toDoTasks')
-    const formDataCheck = new FormData(toDoTasks);
+toDoTasks.addEventListener('click', () => {
+    completedTasks.innerHTML = "";
+    toDoTasks.innerHTML = "";
+    checkTask();
+    completedTasks.innerHTML = "";
+    toDoTasks.innerHTML = "";
+    supprTask();
+});
 
-    formDataCheck.forEach((value, key) => {
-        console.log(key + ':' + value);
-    });
-    
-
-    for(let i = 0; i < elementsVides.length; i++) {
-
-        elementsVides[i].addEventListener('click', (e) => {
-
-            fetch('back.php?check=1', {
-                method: "POST", 
-                body: formDataCheck
-            })
-            .then((response) => {
-                console.log(response.text());
-            })
-        })
-
-        // let promise = await fetch('back/taskCheckBack.php', {method: "POST", body: idElement});
-        // let response = await promise.text();
-    
-    }
-})
+completedTasks.addEventListener('click', () => {
+    completedTasks.innerHTML = "";
+    toDoTasks.innerHTML = "";
+    uncheckTask();
+    completedTasks.innerHTML = "";
+    toDoTasks.innerHTML = "";
+    supprTask();
+});

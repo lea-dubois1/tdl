@@ -1,11 +1,88 @@
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+
+/*******************************************************
+************************ HEADER ************************
+*******************************************************/
+
+header {
+    background-color: rgb(22, 70, 112);
+    color: aliceblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header a {
+    text-decoration: none;
+    color: aliceblue;
+    list-style-type: none;
+}
+
+header ul {
+    display: flex;
+    justify-content: space-between;
+    font-size: larger;
+}
+
+nav {
+    width: 50%;
+    margin-right: 7%;
+}
+
+header h1 {
+    margin-left: 5%;
+}
+
+/*************************************************
+********************** MAIN **********************
+*************************************************/
+
+main {
+    margin: 1%;
+}
+
+h2 {
+    padding-top: 3%;
+}
+
 .uneTacheLigne {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 33vw;
+    width: 70%;
     margin-left: 1vw;
 }
 
 .suppr {
     height: 25px;
+}
+
+
+
+/*************************************************
+********************* FOOTER *********************
+*************************************************/
+
+footer {
+    background-color: rgb(22, 70, 112);
+    color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+}
+
+footer a {
+    text-decoration: none;
+    color: aliceblue;
+    list-style-type: none;
+    padding: 1%;
 }

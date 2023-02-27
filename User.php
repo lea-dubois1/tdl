@@ -139,6 +139,8 @@ class User
 
                 echo '<strong>Success!</strong> You\'re connected<br>';
 
+                header('Location: todolist.php');
+
             }else{    // If the password do not match, error
                 echo '<strong>Error!</strong> Wrong password<br>';
             }
@@ -152,6 +154,7 @@ class User
 
         session_destroy();
         exit('Vous avez bien été deconnecté');
+        header('Location: index.php');
 
     }
 

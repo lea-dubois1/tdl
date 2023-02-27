@@ -1,7 +1,7 @@
 <?php
 
 if (session_status() == PHP_SESSION_NONE){ session_start();}
-require_once '../Task.php';
+require_once 'Task.php';
 $task = new Task;
 
 if(isset($_GET['add'])) {
@@ -18,19 +18,19 @@ if(isset($_GET['recup'])) {
 
 if(isset($_GET['check'])) {
 
-    $task->Check($_POST['idTask']);
+    $task->Check($_GET['idTask']);
 
 }
 
 if(isset($_GET['uncheck'])) {
 
-    $task->Uncheck($_POST['idTask']);
+    $task->Uncheck($_GET['idTask']);
 
 }
 
 if(isset($_GET['delete'])) {
 
-    $task->Delete($_POST['idTask']);
+    $task->Delete($_GET['idTask']);
 
 }
 
